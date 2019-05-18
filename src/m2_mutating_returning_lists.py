@@ -84,11 +84,11 @@ def run_test_doubler():
     # TO DO 2 (continued): Add your ADDITIONAL test(s) here:
     # -------------------------------------------------------------------------
     # Test 2:
-    arg1 = [10, -3, 20, 4]
-    arg2 = [5, 0, 8]
-    correct_arg1_after = [20, -6, 40, 8]
-    correct_arg2_after = [5, 0, 8]
-    expected = [10, 0, 16]
+    arg1 = []
+    arg2 = [9, 20, 40, 9]
+    correct_arg1_after = []
+    correct_arg2_after = [9, 20, 40, 9]
+    expected = [18, 40, 80, 18]
 
     print()
     print('BEFORE the function call:')
