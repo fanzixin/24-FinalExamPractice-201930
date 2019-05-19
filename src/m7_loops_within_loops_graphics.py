@@ -6,8 +6,8 @@ This problem provides practice at:
 
 Authors: David Mutchler, Vibha Alangar, Matt Boutell, Dave Fisher,
          Mark Hays, Amanda Stouder, Aaron Wilkin, their colleagues,
-         and PUT_YOUR_NAME_HERE.
-"""  # TODO: 1. PUT YOUR NAME IN THE ABOVE LINE.
+         and Zixin Fan.
+"""  # DONE: 1. PUT YOUR NAME IN THE ABOVE LINE.
 
 ###############################################################################
 # Students:
@@ -30,6 +30,7 @@ Authors: David Mutchler, Vibha Alangar, Matt Boutell, Dave Fisher,
 ###############################################################################
 
 import rosegraphics as rg
+import math
 
 
 def main():
@@ -90,7 +91,7 @@ def hourglass(window, n, point, radius, color):
     a color that rosegraphics understands.
     """
     # -------------------------------------------------------------------------
-    # TODO: 2. Implement and test this function.
+    # DONE: 2. Implement and test this function.
     #       We provided some tests for you (above).
     # -------------------------------------------------------------------------
     ###########################################################################
@@ -102,6 +103,35 @@ def hourglass(window, n, point, radius, color):
     #    DIFFICULTY:      8
     #    TIME ESTIMATE:  25 minutes (warning: this problem is challenging)
     # -------------------------------------------------------------------------
+    # Going up
+    for k in range(n):
+        center_x = point.x - radius * k
+        center_y = point.y - radius * math.sqrt(3) * k
+
+        N = k + 1  # How many circles are in the k th line.
+        draw_a_line_of_hourglass(window, center_x, center_y, radius, color, N)
+
+    # Going down
+    for k in range(n - 1):
+        center_x = point.x - radius * (k + 1)
+        center_y = point.y + radius * math.sqrt(3) * (k + 1)
+
+        N = k + 2
+        draw_a_line_of_hourglass(window, center_x, center_y, radius, color, N)
+
+
+def draw_a_line_of_hourglass(window, center_x, center_y, radius, color, N):
+    for k in range(N):
+        circle = rg.Circle(rg.Point(center_x, center_y), radius)
+        circle.fill_color = color
+        circle.attach_to(window)
+
+        line = rg.Line(rg.Point(center_x - radius, center_y), rg.Point(center_x + radius, center_y))
+        line.attach_to(window)
+
+        center_x = center_x + 2 * radius
+
+    window.render()
 
 
 def run_test_many_hourglasses():
@@ -164,7 +194,7 @@ def many_hourglasses(window, square, m, colors):
     each of which denotes a color that rosegraphics understands.
     """
     # -------------------------------------------------------------------------
-    # TODO: 3. Implement and test this function.
+    # DONE: 3. Implement and test this function.
     #       We provided some tests for you (above).
     # -------------------------------------------------------------------------
     ###########################################################################
@@ -180,7 +210,31 @@ def many_hourglasses(window, square, m, colors):
     #                         a correct "hourglass" function above)
     #    TIME ESTIMATE:  20 minutes (warning: this problem is challenging)
     # -------------------------------------------------------------------------
+    radius = square.length_of_each_side / 2
 
+    point_x = square.center.x
+    point_y = square.center.y
+
+    index = 0
+
+    for k in range(m):
+        upper_left_x = point_x - radius * (k + 1)
+        upper_left_y = point_y - radius - radius * math.sqrt(3) * k
+        lower_right_x = point_x + radius * (k + 1)
+        lower_right_y = point_y + radius + radius * math.sqrt(3) * k
+
+        rectangle = rg.Rectangle(rg.Point(upper_left_x, upper_left_y), rg.Point(lower_right_x, lower_right_y))
+        rectangle.attach_to(window)
+
+        hourglass(window, k + 1, rg.Point(point_x, point_y), radius, colors[index])
+
+        point_x = point_x + radius * (2 * k + 3)
+
+        index = index + 1
+        if index == len(colors):
+            index = 0
+
+    window.render()
 
 # -----------------------------------------------------------------------------
 # Calls  main  to start the ball rolling.
